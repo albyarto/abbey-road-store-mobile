@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:abbey_road_store/menu.dart';
+import 'package:abbey_road_store/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
