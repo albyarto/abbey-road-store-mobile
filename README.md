@@ -186,19 +186,131 @@ Abbey Road Store adalah aplikasi e-commerce yang menjual berbagai hal tentang Th
     ItemHomepage("Logout", Icons.logout, Colors.red[600]!),
   ];
   ```
-#### Checklist 4: Memunculkan _snackbar_ ketika tombol di klik
+  #### Checklist 4: Memunculkan _snackbar_ ketika tombol di klik
+  
+  Tambahkan properti berikut pada bagian `return Material` pada class `ItemCard`.
+  
+  ```
+  onTap: () {
+            // Menampilkan pesan SnackBar saat kartu ditekan.
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
+              );
+          },
+  ```
+</details>
 
-Tambahkan properti berikut pada bagian `return Material` pada class `ItemCard`.
+<details>
+  <summary>
+  <b>Tugas 8</b>
+  </summary>
 
-```
-onTap: () {
-          // Menampilkan pesan SnackBar saat kartu ditekan.
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
-            );
-        },
-```
+  ### Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?
+  Const di Flutter digunakan untuk membuat nilai konstan pada waktu kompilasi (compile-time constant). Berikut penjelasan detailnya:
+  Keuntungan menggunakan const:
+  - Performa lebih baik karena widget const hanya dibuat sekali dan digunakan kembali
+  - Menghemat memori karena instance yang sama dipakai ulang
+  - Membantu mencegah perubahan yang tidak diinginkan pada nilai
+  
+  Kapan sebaiknya menggunakan const:
+  - Untuk nilai yang tidak akan berubah sepanjang aplikasi berjalan
+  - Pada widget yang seluruh propertinya bersifat immutable
+  - Pada koleksi data yang tetap (fixed collection)
+
+  Kapan sebaiknya tidak menggunakan const:
+  - Pada widget yang propertinya bisa berubah
+  - Ketika nilai tergantung pada runtime/waktu eksekusi
+  - Saat menggunakan data dinamis
+    
+  ### Jelaskan dan bandingkan penggunaan Column dan Row pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!
+  Column dan Row adalah layout widget dasar di Flutter untuk mengatur tata letak:
+  Column:
+  - Mengatur widget secara vertikal (dari atas ke bawah)
+  - Cocok untuk daftar vertikal, form, atau konten yang disusun ke bawah
+
+  Contoh implementasi :
+  ```
+  Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text('Item 1'),
+      SizedBox(height: 8),
+      Text('Item 2'),
+      SizedBox(height: 8),
+      Text('Item 3'),
+    ],
+  )
+  ```
+
+  Row:
+  - Mengatur widget secara horizontal (dari kiri ke kanan)
+  - Cocok untuk toolbar, menu horizontal, atau konten yang berjajar
+
+  Contoh implementasi :
+  ```
+  Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Icon(Icons.star),
+      Text('4.5'),
+      TextButton(
+        onPressed: () {},
+        child: Text('Review'),
+      ),
+    ],
+  )
+  ```
+
+  ### Sebutkan apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!
+  #### Elemen input Flutter yang digunakan dalam form tugas:
+  - TextFormField: Untuk memasukkan nama, jumlah, dan deskripsi produk.
+  - ElevatedButton: Untuk menyimpan data setelah form divalidasi.
+    
+  #### Elemen input Flutter lain yang tidak digunakan:
+  - DatePicker: Untuk memilih tanggal.
+  - DropdownButtonFormField: Untuk memilih satu opsi dari daftar.
+  - Slider: Untuk memilih nilai dalam rentang tertentu.
+  - TimePicker: Untuk memilih waktu.
+  - Checkbox: Untuk input pilihan ya/tidak.
+  - Radio: Untuk memilih satu dari beberapa opsi.
+  - Switch: Untuk input boolean (true/false).
+    
+  ### Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?
+  Pada aplikasi ini, agar membuat tampilan aplikasi konsisten, saya mengatur theme pada berkas `main.dart` seperti di code ini:
+  ```
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: const ColorScheme(
+          primary: Color(0xFF1A237E),
+          secondary: Color(0xFF7986CB),
+          surface: Colors.white,
+          error: Colors.red,
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+          onError: Colors.white,
+          brightness: Brightness.light,
+        ),
+      ),
+      home: MyHomePage(),
+    );
+  }
+  ```
+  ### Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?
+  Pada aplikasi ini, navigasi halaman-halaman menggunakan `left_drawer` dengan Widget Drawer. Untuk navigasi dari drawer ke halaman lain menggunakan push replacement, berikut contoh ke halaman home:
+  ```
+   onTap: () {
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyHomePage(),
+      ));
+},
+  ```
 </details>
  
