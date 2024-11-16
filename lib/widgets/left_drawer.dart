@@ -1,3 +1,4 @@
+import 'package:abbey_road_store/screens/list_productentry.dart';
 import 'package:flutter/material.dart';
 import 'package:abbey_road_store/screens/menu.dart';
 import 'package:abbey_road_store/screens/productentry_form.dart';
@@ -53,7 +54,7 @@ class LeftDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.add),
               title: const Text('Tambah Product'),
-              // Bagian redirection ke MoodEntryFormPage
+              // Bagian redirection ke ProductEntryFormPage
               onTap: () {
                 Navigator.push(
                   context,
@@ -61,6 +62,17 @@ class LeftDrawer extends StatelessWidget {
                     builder: (context) => const ProductEntryFormPage(),
                   ),
                 );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.inventory),
+              title: const Text('Daftar Product'),
+              onTap: () {
+                  // Route menu ke halaman product
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProductEntryPage()),
+                  );
               },
             ),
         ],

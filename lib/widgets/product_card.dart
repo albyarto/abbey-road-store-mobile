@@ -1,39 +1,44 @@
+import 'package:abbey_road_store/screens/list_productentry.dart';
+import 'package:abbey_road_store/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:abbey_road_store/screens/productentry_form.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ItemHomepage {
-    final String name;
-    final IconData icon;
-    final Color color; // Menambahkan properti warna
+  final String name;
+  final IconData icon;
+  final Color color; // Menambahkan properti warna
 
-    ItemHomepage(this.name, this.icon, this.color);
+  ItemHomepage(this.name, this.icon, this.color);
 }
 
 class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
 
-  final ItemHomepage item;  
-  
-  const ItemCard(this.item, {super.key}); 
+  final ItemHomepage item;
+
+  const ItemCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    
     return Material(
       // Menggunakan warna dari item.
       color: item.color,
       // Membuat sudut kartu melengkung.
       borderRadius: BorderRadius.circular(12),
-      
+
       child: InkWell(
         // Aksi ketika kartu ditekan.
-        onTap: () {
+        onTap: () async {
           // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
-            );
-          
+            ..showSnackBar(SnackBar(
+                content: Text("Kamu telah menekan tombol ${item.name}!")));
+
           // Navigate ke route yang sesuai (tergantung jenis tombol)
           if (item.name == "Tambah Produk") {
             Navigator.push(
@@ -42,7 +47,35 @@ class ItemCard extends StatelessWidget {
                 builder: (context) => const ProductEntryFormPage(),
               ),
             );
+          } else if (item.name == "Lihat Daftar Produk") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductEntryPage()),
+            );
+          } else if (item.name == "Logout") {
+              final response = await request.logout(
+                  "http://127.0.0.1:8000/auth/logout/");
+              String message = response["message"];
+              if (context.mounted) {
+                  if (response['status']) {
+                      String uname = response["username"];
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("$message Sampai jumpa, $uname."),
+                      ));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                      );
+                  } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(message),
+                          ),
+                      );
+                  }
+              }
           }
+          
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(
